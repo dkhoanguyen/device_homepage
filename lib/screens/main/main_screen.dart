@@ -10,6 +10,7 @@ class MainScreen extends StatelessWidget {
     return const Scaffold(
       body: SafeArea(
           child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 1,

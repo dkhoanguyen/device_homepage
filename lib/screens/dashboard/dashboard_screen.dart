@@ -24,27 +24,37 @@ class Dashboard extends StatelessWidget {
                   flex: 5,
                   child: Column(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(defaultPadding),
+                      SizedBox(
                         height: 500,
-                        decoration: BoxDecoration(
-                            color: secondaryColor,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(color: Colors.white10)),
-                        child: const Column(children: [
-                          DeviceHeadline(
-                              nameTitle: "robotics_default",
-                              actionButtonTitle: "Actions"),
-                          Padding(
-                            padding: EdgeInsets.all(defaultPadding / 2),
-                            child: Divider(
-                              color: Colors.white24,
-                              thickness: 2,
-                            ),
-                          ),
-                          InfoCard(),
-                        ]),
+                        child: Container(
+                          padding: const EdgeInsets.all(defaultPadding),
+                          decoration: BoxDecoration(
+                              color: secondaryColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(color: Colors.white10)),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const DeviceHeadline(
+                                    nameTitle: "robotics_default",
+                                    actionButtonTitle: "Actions"),
+                                const Padding(
+                                  padding: EdgeInsets.all(defaultPadding / 2),
+                                  child: Divider(
+                                    color: Colors.white24,
+                                    thickness: 2,
+                                  ),
+                                ),
+                                Expanded(
+                                    child: LayoutBuilder(
+                                  builder: (context, constraints) =>
+                                      DeviceInfoCardGridView(
+                                    boxConstraints: constraints,
+                                  ),
+                                )),
+                              ]),
+                        ),
                       ),
                       if (Responsive.isMobile(context))
                         const SizedBox(

@@ -1,4 +1,5 @@
 import 'package:device_homepage/constants.dart';
+import 'package:device_homepage/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -81,7 +82,9 @@ class DeviceInfoCard extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           info.title!,
-          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: Responsive.isMobile(context) ? 10 : 13,
+              fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5),
         Row(
@@ -93,7 +96,9 @@ class DeviceInfoCard extends StatelessWidget {
               const SizedBox(width: 5),
             Text(
               info.info!,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w100),
+              style: TextStyle(
+                  fontSize: Responsive.isMobile(context) ? 13 : 15,
+                  fontWeight: FontWeight.w100),
             ),
           ],
         ),
@@ -124,7 +129,12 @@ class DeviceInfoCardGridView extends StatelessWidget {
         crossAxisCount: size.width < 500 ? 2 : 3,
         crossAxisSpacing: defaultPadding,
         mainAxisSpacing: defaultPadding,
-        childAspectRatio: boxConstraints.maxWidth / 200,
+        childAspectRatio: !Responsive.isMobile(context)
+            ? boxConstraints.maxWidth / 200
+            : MediaQuery.of(context).size.width >= 500 &&
+                    MediaQuery.of(context).size.width < 700
+                ? boxConstraints.maxWidth / 150
+                : boxConstraints.maxWidth / 110,
       ),
       itemBuilder: (context, index) =>
           DeviceInfoCard(info: deviceInfoList[index]),

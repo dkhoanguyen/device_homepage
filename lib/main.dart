@@ -1,5 +1,5 @@
 import 'package:device_homepage/constants.dart';
-import 'package:device_homepage/controllers/MenuAppController.dart';
+import 'package:device_homepage/controllers/menu_app_controller.dart';
 import 'package:device_homepage/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

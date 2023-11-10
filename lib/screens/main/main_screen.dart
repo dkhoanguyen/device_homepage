@@ -1,7 +1,9 @@
+import 'package:device_homepage/controllers/menu_app_controller.dart';
 import 'package:device_homepage/responsive.dart';
 import 'package:device_homepage/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:device_homepage/screens/main/components/side_menu.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -9,6 +11,8 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: context.read<MenuAppController>().scaffoldKey,
+      drawer: const SizedBox(width: 200, child: SideMenu()),
       body: SafeArea(
           child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

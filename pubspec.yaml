@@ -40,6 +40,8 @@ dependencies:
   fl_chart: ^0.62.0
   provider: ^6.0.5
   dropdown_button2: ^2.3.9
+  http: ^1.1.0
+  dio: ^5.3.3
 
 
 dev_dependencies:

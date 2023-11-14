@@ -89,7 +89,7 @@ class _ActionSettingsState extends State<ActionSettings> {
             borderRadius: BorderRadius.circular(4),
             color: Colors.blue,
           ),
-          offset: const Offset(0, 8),
+          offset: const Offset(0, -5),
         ),
         menuItemStyleData: MenuItemStyleData(
           customHeights: [
@@ -140,10 +140,11 @@ class MenuItem {
 }
 
 abstract class MenuItems {
-  static const List<MenuItem> firstItems = [reboot];
+  static const List<MenuItem> firstItems = [update, reboot];
   static const List<MenuItem> secondItems = [shutdown];
 
   static const reboot = MenuItem(text: 'Reboot', icon: Icons.restart_alt);
+  static const update = MenuItem(text: 'Update', icon: Icons.update);
   static const shutdown = MenuItem(text: 'Shutdown', icon: Icons.logout);
 
   static Widget buildItem(MenuItem item) {

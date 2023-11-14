@@ -95,7 +95,7 @@ class ProfileCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             color: secondaryColor,
           ),
-          offset: const Offset(0, 8),
+          offset: const Offset(0, -2),
         ),
         menuItemStyleData: MenuItemStyleData(
           customHeights: [

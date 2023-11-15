@@ -1,6 +1,9 @@
 import 'package:device_homepage/constants.dart';
+import 'package:device_homepage/models/device_info.dart';
 import 'package:device_homepage/responsive.dart';
+import 'package:device_homepage/services/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class InfoCard extends StatelessWidget {
@@ -21,52 +24,71 @@ class InfoCard extends StatelessWidget {
   }
 }
 
-class DeviceInfo {
+class DeviceInfoCell {
   final Icon? icon;
   final SvgPicture? image;
   final String? title;
   final String? info;
-  DeviceInfo({this.title, this.info, this.icon, this.image});
+  final bool? wrapText;
+  DeviceInfoCell({this.title, this.info, this.icon, this.image, this.wrapText});
 }
 
-List deviceInfoList = [
-  DeviceInfo(
-      title: "Status",
-      info: "Online",
-      icon: const Icon(
-        Icons.check,
-        color: Colors.green,
-        size: 20,
-      )),
-  DeviceInfo(title: "UUID", info: "defaults"),
-  DeviceInfo(
-      title: "Type",
-      info: "Raspberry Pi 4",
-      image: SvgPicture.asset(
-        "assets/icons/Raspberry_Pi_Logo.svg",
-        height: 20,
-      )),
-  DeviceInfo(title: "Last Online", info: "2 hours"),
-  DeviceInfo(title: "OS Type", info: "Raspbian"),
-  DeviceInfo(title: "Device State", info: "development"),
-  DeviceInfo(
-      title: "Internet Access",
-      info: "Offline",
-      icon: const Icon(
-        Icons.cloud_off,
-        color: Colors.red,
-        size: 20,
-      )),
-  DeviceInfo(
-      title: "Update Status",
-      info: "Up to date",
-      icon: const Icon(
-        Icons.check,
-        color: Colors.green,
-        size: 20,
-      )),
-  DeviceInfo(title: "Fleet", info: "UTS RI"),
-];
+class DeviceInfoCardBuilder {
+  final DeviceInfo deviceInfo;
+
+  DeviceInfoCardBuilder({required this.deviceInfo});
+
+  List<DeviceInfoCell> build() {
+    return [
+      DeviceInfoCell(
+          title: "Status",
+          info: deviceInfo.status,
+          icon: const Icon(
+            Icons.check,
+            color: Colors.green,
+            size: 20,
+          )),
+      DeviceInfoCell(title: "UUID", info: deviceInfo.uuid),
+      DeviceInfoCell(
+          title: "Type",
+          info: deviceInfo.deviceType,
+          image: SvgPicture.asset(
+            "assets/icons/Raspberry_Pi_Logo.svg",
+            height: 20,
+          )),
+      DeviceInfoCell(
+          title: "Last Online", info: "${deviceInfo.onlineDuration} hours"),
+      DeviceInfoCell(title: "OS Type", info: deviceInfo.osType),
+      DeviceInfoCell(
+          title: "Device State", info: deviceInfo.deviceRole, wrapText: true),
+      DeviceInfoCell(
+          title: "Internet Access",
+          info: deviceInfo.internetStatus,
+          icon: (deviceInfo.internetStatus == "Connected")
+              ? const Icon(
+                  Icons.cloud_done_outlined,
+                  color: Colors.green,
+                  size: 20,
+                )
+              : const Icon(
+                  Icons.cloud_off,
+                  color: Colors.red,
+                  size: 20,
+                )),
+      DeviceInfoCell(
+          title: "Update Status",
+          info: "Up to date",
+          icon: const Icon(
+            Icons.check,
+            color: Colors.green,
+            size: 20,
+          )),
+      DeviceInfoCell(
+          title: "Supervior Release",
+          info: deviceInfo.supervisorRelease.substring(7, 19)),
+    ];
+  }
+}
 
 class DeviceInfoCard extends StatelessWidget {
   const DeviceInfoCard({
@@ -74,7 +96,7 @@ class DeviceInfoCard extends StatelessWidget {
     required this.info,
   }) : super(key: key);
 
-  final DeviceInfo info;
+  final DeviceInfoCell info;
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +116,27 @@ class DeviceInfoCard extends StatelessWidget {
             if (info.image != null) info.image!,
             if (info.icon != null || info.image != null)
               const SizedBox(width: 5),
-            Text(
-              info.info!,
-              style: TextStyle(
-                  fontSize: Responsive.isMobile(context) ? 13 : 15,
-                  fontWeight: FontWeight.w100),
-            ),
+            (info.wrapText != null && info.wrapText == true)
+                ? Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.pinkAccent,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: Colors.white10)),
+                    child: Text(
+                      info.info!,
+                      style: TextStyle(
+                          fontSize: Responsive.isMobile(context) ? 13 : 15,
+                          fontWeight: FontWeight.w100),
+                    ),
+                  )
+                : Text(
+                    info.info!,
+                    style: TextStyle(
+                        fontSize: Responsive.isMobile(context) ? 13 : 15,
+                        fontWeight: FontWeight.w100),
+                  ),
           ],
         ),
       ]),
@@ -107,37 +144,38 @@ class DeviceInfoCard extends StatelessWidget {
   }
 }
 
-class DeviceInfoCardGridView extends StatelessWidget {
-  const DeviceInfoCardGridView(
-      {Key? key,
-      this.crossAxisCount = 3,
-      this.childAspectRatio = 3,
-      required this.boxConstraints})
+class DeviceInfoCardGridView extends ConsumerWidget {
+  const DeviceInfoCardGridView({Key? key, required this.boxConstraints})
       : super(key: key);
-
-  final int crossAxisCount;
-  final double childAspectRatio;
   final BoxConstraints boxConstraints;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final Size size = MediaQuery.of(context).size;
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: deviceInfoList.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: size.width < 500 ? 2 : 3,
-        crossAxisSpacing: defaultPadding,
-        mainAxisSpacing: defaultPadding,
-        childAspectRatio: !Responsive.isMobile(context)
-            ? boxConstraints.maxWidth / 200
-            : MediaQuery.of(context).size.width >= 500 &&
-                    MediaQuery.of(context).size.width < 700
-                ? boxConstraints.maxWidth / 150
-                : boxConstraints.maxWidth / 110,
-      ),
-      itemBuilder: (context, index) =>
-          DeviceInfoCard(info: deviceInfoList[index]),
-    );
+    return ref.watch(deviceDataProvider).when(data: (deviceDataProvider) {
+      final deviceInfoList =
+          DeviceInfoCardBuilder(deviceInfo: deviceDataProvider).build();
+      return GridView.builder(
+        shrinkWrap: true,
+        itemCount: deviceInfoList.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: size.width < 500 ? 2 : 3,
+          crossAxisSpacing: defaultPadding,
+          mainAxisSpacing: defaultPadding,
+          childAspectRatio: !Responsive.isMobile(context)
+              ? boxConstraints.maxWidth / 200
+              : MediaQuery.of(context).size.width >= 500 &&
+                      MediaQuery.of(context).size.width < 700
+                  ? boxConstraints.maxWidth / 150
+                  : boxConstraints.maxWidth / 110,
+        ),
+        itemBuilder: (context, index) =>
+            DeviceInfoCard(info: deviceInfoList[index]),
+      );
+    }, error: (deviceDataProvider, err) {
+      return SelectableText("Error: $err");
+    }, loading: () {
+      return const Text("Loading device information...");
+    });
   }
 }

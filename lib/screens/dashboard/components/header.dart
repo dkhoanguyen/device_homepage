@@ -16,11 +16,11 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (!Responsive.isDesktop(context))
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: context.read<MenuAppController>().controlMenu,
-          ),
+        // if (!Responsive.isDesktop(context))
+        //   IconButton(
+        //     icon: const Icon(Icons.menu),
+        //     onPressed: context.read<MenuAppController>().controlMenu,
+        //   ),
         if (!Responsive.isMobile(context))
           Text(
             "Device Dashboard",

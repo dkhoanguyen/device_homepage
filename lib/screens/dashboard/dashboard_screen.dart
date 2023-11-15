@@ -4,13 +4,15 @@ import 'package:device_homepage/screens/dashboard/components/chart.dart';
 import 'package:device_homepage/screens/dashboard/components/device_headline.dart';
 import 'package:device_homepage/screens/dashboard/components/device_info_card.dart';
 import 'package:device_homepage/screens/dashboard/components/header.dart';
+import 'package:device_homepage/services/api_client.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends ConsumerWidget {
   const Dashboard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(defaultPadding),
@@ -61,7 +63,7 @@ class Dashboard extends StatelessWidget {
                           height: defaultPadding,
                         ),
                       if (Responsive.isMobile(context))
-                        const DeviceHardwareStatus()
+                        const DeviceHardwareStatus(),
                     ],
                   ),
                 ),

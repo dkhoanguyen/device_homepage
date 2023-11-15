@@ -4,8 +4,9 @@ class DeviceInfo {
   final String deviceType;
   final int onlineDuration;
   final String osType;
-  final int deviceState;
-  final int internetStatus;
+  final String deviceRole;
+  final String internetStatus;
+  final String supervisorRelease;
 
   const DeviceInfo(
       {required this.status,
@@ -13,8 +14,9 @@ class DeviceInfo {
       required this.deviceType,
       required this.onlineDuration,
       required this.osType,
-      required this.deviceState,
-      required this.internetStatus});
+      required this.deviceRole,
+      required this.internetStatus,
+      required this.supervisorRelease});
 
   factory DeviceInfo.fromJson(Map<String, dynamic> json) {
     return DeviceInfo(
@@ -23,7 +25,8 @@ class DeviceInfo {
         deviceType: json['device_type'] as String,
         onlineDuration: json['online_duration'] as int,
         osType: json['os_type'] as String,
-        deviceState: json['device_state'] as int,
-        internetStatus: json['internet_status'] as int);
+        deviceRole: json['device_role'] as String,
+        internetStatus: json['internet_status'] as String,
+        supervisorRelease: json['supervisor_release'] as String);
   }
 }

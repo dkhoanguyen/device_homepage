@@ -11,8 +11,6 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<MenuAppController>().scaffoldKey,
-      drawer: const SizedBox(width: 200, child: SideMenu()),
       body: SafeArea(
           child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

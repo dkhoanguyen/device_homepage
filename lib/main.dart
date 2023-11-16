@@ -1,10 +1,8 @@
 import 'package:device_homepage/constants.dart';
-import 'package:device_homepage/controllers/menu_app_controller.dart';
-import 'package:device_homepage/screens/main/main_screen.dart';
+import 'package:device_homepage/screens/side_menu/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

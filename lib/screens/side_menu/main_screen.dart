@@ -1,9 +1,7 @@
-import 'package:device_homepage/controllers/menu_app_controller.dart';
 import 'package:device_homepage/responsive.dart';
 import 'package:device_homepage/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:device_homepage/screens/main/components/side_menu.dart';
-import 'package:provider/provider.dart';
+import 'package:device_homepage/screens/side_menu/components/side_menu.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});

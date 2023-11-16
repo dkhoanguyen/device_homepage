@@ -98,14 +98,32 @@ class DeviceInfoCard extends StatelessWidget {
 
   final DeviceInfoCell info;
 
+  double _adaptiveFontSize(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    if (Responsive.isDesktop(context)) {
+      if (size.width > 1200) return 13;
+      return 12;
+    }
+    if (size.width >= 920) {
+      return 13;
+    } else if (size.width > 764 && size.width < 920) {
+      return 10;
+    }
+    if (size.width >= 500 && MediaQuery.of(context).size.width <= 764) {
+      return 13;
+    } else if (size.width < 500 && size.width >= 425) return 12;
+    return 11;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return SizedBox(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           info.title!,
           style: TextStyle(
-              fontSize: Responsive.isMobile(context) ? 10 : 13,
+              fontSize: _adaptiveFontSize(context),
               fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5),
@@ -127,14 +145,14 @@ class DeviceInfoCard extends StatelessWidget {
                     child: Text(
                       info.info!,
                       style: TextStyle(
-                          fontSize: Responsive.isMobile(context) ? 13 : 15,
+                          fontSize: _adaptiveFontSize(context),
                           fontWeight: FontWeight.w100),
                     ),
                   )
                 : Text(
                     info.info!,
                     style: TextStyle(
-                        fontSize: Responsive.isMobile(context) ? 13 : 15,
+                        fontSize: _adaptiveFontSize(context),
                         fontWeight: FontWeight.w100),
                   ),
           ],
@@ -149,6 +167,19 @@ class DeviceInfoCardGridView extends ConsumerWidget {
       : super(key: key);
   final BoxConstraints boxConstraints;
 
+  double _childAspectRatio(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    if (Responsive.isDesktop(context)) {
+      return boxConstraints.maxWidth / 200;
+    }
+    if (size.width >= 600) {
+      return boxConstraints.maxWidth / 170;
+    } else if (size.width >= 500 && MediaQuery.of(context).size.width < 600) {
+      return boxConstraints.maxWidth / 150;
+    }
+    return boxConstraints.maxWidth / 110;
+  }
+
   @override
   Widget build(BuildContext context, ref) {
     final Size size = MediaQuery.of(context).size;
@@ -159,16 +190,10 @@ class DeviceInfoCardGridView extends ConsumerWidget {
         shrinkWrap: true,
         itemCount: deviceInfoList.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: size.width < 500 ? 2 : 3,
-          crossAxisSpacing: defaultPadding,
-          mainAxisSpacing: defaultPadding,
-          childAspectRatio: !Responsive.isMobile(context)
-              ? boxConstraints.maxWidth / 200
-              : MediaQuery.of(context).size.width >= 500 &&
-                      MediaQuery.of(context).size.width < 700
-                  ? boxConstraints.maxWidth / 150
-                  : boxConstraints.maxWidth / 110,
-        ),
+            crossAxisCount: size.width < 500 ? 2 : 3,
+            crossAxisSpacing: defaultPadding,
+            mainAxisSpacing: defaultPadding,
+            childAspectRatio: _childAspectRatio(context)),
         itemBuilder: (context, index) =>
             DeviceInfoCard(info: deviceInfoList[index]),
       );

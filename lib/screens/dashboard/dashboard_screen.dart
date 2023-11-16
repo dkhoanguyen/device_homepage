@@ -1,10 +1,10 @@
 import 'package:device_homepage/constants.dart';
 import 'package:device_homepage/responsive.dart';
-import 'package:device_homepage/screens/dashboard/components/chart.dart';
+import 'package:device_homepage/screens/dashboard/components/device_hardware_status.dart';
 import 'package:device_homepage/screens/dashboard/components/device_headline.dart';
 import 'package:device_homepage/screens/dashboard/components/device_info_card.dart';
 import 'package:device_homepage/screens/dashboard/components/header.dart';
-import 'package:device_homepage/services/api_client.dart';
+import 'package:device_homepage/screens/dashboard/components/logs_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,6 +21,7 @@ class Dashboard extends ConsumerWidget {
             const Header(),
             const SizedBox(height: defaultPadding),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 5,
@@ -64,6 +65,11 @@ class Dashboard extends ConsumerWidget {
                         ),
                       if (Responsive.isMobile(context))
                         const DeviceHardwareStatus(),
+                      if (Responsive.isMobile(context))
+                        const SizedBox(
+                          height: defaultPadding,
+                        ),
+                      if (Responsive.isMobile(context)) const LogsViewer(),
                     ],
                   ),
                 ),
@@ -72,45 +78,21 @@ class Dashboard extends ConsumerWidget {
                     width: defaultPadding,
                   ),
                 if (!Responsive.isMobile(context))
-                  const Expanded(flex: 2, child: DeviceHardwareStatus())
+                  const Expanded(
+                      flex: 5,
+                      child: Column(
+                        children: [
+                          DeviceHardwareStatus(),
+                          SizedBox(
+                            height: defaultPadding,
+                          ),
+                          LogsViewer(),
+                        ],
+                      ))
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class DeviceHardwareStatus extends StatelessWidget {
-  const DeviceHardwareStatus({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(defaultPadding),
-      height: 500,
-      decoration: BoxDecoration(
-          color: secondaryColor,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(color: Colors.white10)),
-      child: Column(
-        children: [
-          const Text("Storage Details",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-          const Chart(),
-          const SizedBox(height: defaultPadding),
-          Container(
-              padding: const EdgeInsets.all(defaultPadding),
-              decoration: BoxDecoration(
-                border:
-                    Border.all(width: 2, color: primaryColor.withOpacity(0.15)),
-                borderRadius:
-                    const BorderRadius.all(Radius.circular(defaultPadding)),
-              )),
-        ],
       ),
     );
   }

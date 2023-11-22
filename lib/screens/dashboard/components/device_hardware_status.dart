@@ -1,50 +1,67 @@
 import 'package:device_homepage/constants.dart';
 import 'package:device_homepage/screens/dashboard/components/hardware_status.dart';
+import 'package:device_homepage/services/websocket_client.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DeviceHardwareStatus extends StatelessWidget {
+class DeviceHardwareStatus extends ConsumerWidget {
   const DeviceHardwareStatus({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(defaultPadding),
-      height: 135,
-      decoration: BoxDecoration(
-          color: secondaryColor,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(color: Colors.white10)),
-      child: const Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                CpuUsageGraph(),
-                SizedBox(
-                  height: 16,
-                ),
-                CpuUsageGraph(),
-              ],
+  Widget build(BuildContext context, ref) {
+    return ref.watch(hardwareStatusProvider).when(
+        data: (hardwareStatusProvider) {
+      return Container(
+        padding: const EdgeInsets.all(defaultPadding),
+        height: 135,
+        decoration: BoxDecoration(
+            color: secondaryColor,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(color: Colors.white10)),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  HardwareUsageBar(
+                      name: "CPU Usage",
+                      hardwareUsage: hardwareStatusProvider.cpuUsage / 100),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  HardwareUsageBar(
+                      name: "RAM Usage",
+                      hardwareUsage: hardwareStatusProvider.memoryUsage / 100),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                CpuUsageGraph(),
-                SizedBox(
-                  height: 16,
-                ),
-                CpuUsageGraph(),
-              ],
+            SizedBox(
+              width: 16,
             ),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              child: Column(
+                children: [
+                  HardwareUsageBar(
+                      name: "Storage",
+                      hardwareUsage: hardwareStatusProvider.storageUsage / 100),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  HardwareUsageBar(
+                      name: "Temperature",
+                      hardwareUsage: hardwareStatusProvider.temperature / 100),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }, error: (hardwareStatusProvider, err) {
+      return const SelectableText("Error");
+    }, loading: () {
+      return const Text("Loading device information...");
+    });
   }
 }

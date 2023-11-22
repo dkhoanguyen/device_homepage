@@ -12,8 +12,8 @@ class HardwareStatus {
 
   factory HardwareStatus.fromJson(Map<String, dynamic> json) {
     return HardwareStatus(
-        cpuUsage: json['cpu_usage'] as double,
-        memoryUsage: json['memory_usuage'] as double,
+        cpuUsage: json['cpu'] as double,
+        memoryUsage: json['ram'] as double,
         storageUsage: json['storage'] as double,
         temperature: json['temperature'] as double);
   }

@@ -3,6 +3,7 @@ import 'package:device_homepage/models/device_info.dart';
 import 'package:device_homepage/models/hardware_status.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class DeviceApiClient {
   static const baseUrl = 'http://0.0.0.0:8080';
@@ -16,7 +17,7 @@ class DeviceApiClient {
             'Bearer robotics', // Include your access token or any other headers
       };
       final response = await http.get(
-          Uri.parse("http://0.0.0.0:8080/api/v1/watchtower/device-info"),
+          Uri.parse("http://0.0.0.0:8080/api/v1/device/info"),
           headers: headers);
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         return DeviceInfo.fromJson(
@@ -26,7 +27,6 @@ class DeviceApiClient {
       }
     } catch (e) {
       // Handle network and other errors
-      print('Error: $e');
       return const DeviceInfo(
         status: "1",
         uuid: "1",
@@ -74,19 +74,32 @@ final deviceDataProvider = FutureProvider<DeviceInfo>((ref) async {
   return ref.read(deviceClientProvider).getDeviceInfo();
 });
 
-final hardwareStatusProvider = StreamProvider<HardwareStatus>((ref) async* {
-  while (true) {
-    final response = await http.get(Uri.parse('YOUR_BACKEND_API_ENDPOINT'));
+// final hardwareStatusProvider = StreamProvider<HardwareStatus>((ref) async* {
+//   while (true) {
+//     final response = await http.get(Uri.parse('YOUR_BACKEND_API_ENDPOINT'));
 
-    if (response.statusCode == 200) {
-      yield HardwareStatus.fromJson(
-          jsonDecode(response.body) as Map<String, dynamic>);
-    } else {
-      // Handle error
-      print('Failed to load CPU usage data');
-    }
+//     if (response.statusCode == 200) {
+//       yield HardwareStatus.fromJson(
+//           jsonDecode(response.body) as Map<String, dynamic>);
+//     } else {
+//       // Handle error
+//       print('Failed to load CPU usage data');
+//     }
 
-    // Wait for 1 minute before fetching again
-    await Future.delayed(const Duration(minutes: 1));
-  }
+//     // Wait for 1 minute before fetching again
+//     await Future.delayed(const Duration(minutes: 1));
+//   }
+// });
+
+final webSocketProvider = Provider<WebSocketChannel>((ref) {
+  return WebSocketChannel.connect(
+      Uri.parse('ws://your_server_address:8080/ws'));
+});
+
+final systemResourcesProvider = StreamProvider<HardwareStatus>((ref) {
+  final webSocket = ref.watch(webSocketProvider);
+  return webSocket.stream.map((dynamic data) {
+    final Map<String, dynamic> jsonData = data as Map<String, dynamic>;
+    return HardwareStatus.fromJson(jsonData);
+  });
 });

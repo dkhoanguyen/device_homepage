@@ -13,8 +13,9 @@ class DeviceApiClient {
   Future<DeviceInfo> getDeviceInfo() async {
     try {
       final Map<String, String> headers = {
-        'Authorization':
-            'Bearer robotics', // Include your access token or any other headers
+        'Authorization': 'Bearer robotics',
+        "Content-Type":
+            "application/json" // Include your access token or any other headers
       };
       final response = await http.get(
           Uri.parse("http://0.0.0.0:8080/api/v1/device/info"),
@@ -27,6 +28,7 @@ class DeviceApiClient {
       }
     } catch (e) {
       // Handle network and other errors
+      print(e);
       return const DeviceInfo(
         status: "1",
         uuid: "1",

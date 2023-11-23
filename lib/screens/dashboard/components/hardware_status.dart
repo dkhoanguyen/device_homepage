@@ -1,3 +1,4 @@
+import 'package:device_homepage/responsive.dart';
 import 'package:flutter/material.dart';
 
 class HardwareUsageBar extends StatelessWidget {
@@ -19,11 +20,13 @@ class HardwareUsageBar extends StatelessWidget {
           children: [
             Text(
               name,
-              style: const TextStyle(fontSize: 12.0),
+              style: TextStyle(
+                  fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
             ),
             Text(
               '${(hardwareUsage * 100).toStringAsFixed(2)}%',
-              style: const TextStyle(fontSize: 12.0),
+              style: TextStyle(
+                  fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
             ),
           ],
         ),

@@ -170,9 +170,9 @@ class DeviceInfoCardGridView extends ConsumerWidget {
     if (Responsive.isDesktop(context)) {
       return boxConstraints.maxWidth / 200;
     }
-    if (size.width >= 600) {
+    if (size.width >= 500) {
       return boxConstraints.maxWidth / 170;
-    } else if (size.width >= 500 && MediaQuery.of(context).size.width < 600) {
+    } else if (size.width >= 450 && MediaQuery.of(context).size.width < 500) {
       return boxConstraints.maxWidth / 150;
     }
     return boxConstraints.maxWidth / 110;

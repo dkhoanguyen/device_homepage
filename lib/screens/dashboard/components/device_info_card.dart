@@ -83,9 +83,7 @@ class DeviceInfoCardBuilder {
             color: Colors.green,
             size: 20,
           )),
-      DeviceInfoCell(
-          title: "Supervior Release",
-          info: deviceInfo.supervisorRelease.substring(7, 19)),
+      DeviceInfoCell(title: "Supervior Release", info: "Test"),
     ];
   }
 }

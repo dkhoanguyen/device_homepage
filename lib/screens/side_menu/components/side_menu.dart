@@ -11,7 +11,7 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset("assets/images/logo.png"),
+            child: Container(),
           ),
           DrawerListTile(
             title: "Dashboard",
@@ -29,8 +29,8 @@ class SideMenu extends StatelessWidget {
             press: () {},
           ),
           DrawerListTile(
-            title: "Diagnostics",
-            icon: const Icon(Icons.health_and_safety),
+            title: "Instructions",
+            icon: const Icon(Icons.description_rounded),
             press: () {},
           ),
         ],

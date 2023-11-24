@@ -4,14 +4,25 @@ import 'package:flutter/material.dart';
 class HardwareUsageBar extends StatelessWidget {
   final double hardwareUsage;
   final String name;
+  final Text displayedText;
   const HardwareUsageBar(
-      {super.key, required this.hardwareUsage, required this.name});
+      {super.key,
+      required this.hardwareUsage,
+      required this.name,
+      required this.displayedText});
+
+  Color _progressBarColor(double value) {
+    if (value >= 0.7) {
+      return const Color.fromRGBO(244, 67, 54, 1);
+    } else if (value > 0.5 && value < 0.7) {
+      return const Color.fromARGB(255, 244, 216, 54);
+    }
+    return const Color.fromRGBO(76, 175, 80, 1);
+  }
 
   @override
   Widget build(BuildContext context) {
-    Color progressBarColor = hardwareUsage > 0.5
-        ? const Color.fromRGBO(244, 67, 54, 1)
-        : const Color.fromRGBO(76, 175, 80, 1);
+    Color progressBarColor = _progressBarColor(hardwareUsage);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,11 +34,7 @@ class HardwareUsageBar extends StatelessWidget {
               style: TextStyle(
                   fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
             ),
-            Text(
-              '${(hardwareUsage * 100).toStringAsFixed(2)}%',
-              style: TextStyle(
-                  fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
-            ),
+            displayedText,
           ],
         ),
         const SizedBox(height: 10.0),

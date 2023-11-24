@@ -1,4 +1,5 @@
 import 'package:device_homepage/constants.dart';
+import 'package:device_homepage/responsive.dart';
 import 'package:device_homepage/screens/dashboard/components/hardware_status.dart';
 import 'package:device_homepage/services/websocket_client.dart';
 import 'package:flutter/material.dart';
@@ -26,32 +27,56 @@ class DeviceHardwareStatus extends ConsumerWidget {
               child: Column(
                 children: [
                   HardwareUsageBar(
-                      name: "CPU Usage",
-                      hardwareUsage: hardwareStatusProvider.cpuUsage / 100),
-                  SizedBox(
+                    name: "CPU Usage",
+                    hardwareUsage: hardwareStatusProvider.cpuUsage / 100,
+                    displayedText: Text(
+                      '${(hardwareStatusProvider.cpuUsage).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                          fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+                    ),
+                  ),
+                  const SizedBox(
                     height: 16,
                   ),
                   HardwareUsageBar(
-                      name: "RAM Usage",
-                      hardwareUsage: hardwareStatusProvider.memoryUsage / 100),
+                    name: "RAM Usage",
+                    hardwareUsage: hardwareStatusProvider.memoryUsage / 100,
+                    displayedText: Text(
+                      '${(hardwareStatusProvider.cpuUsage).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                          fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+                    ),
+                  ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 16,
             ),
             Expanded(
               child: Column(
                 children: [
                   HardwareUsageBar(
-                      name: "Storage",
-                      hardwareUsage: hardwareStatusProvider.storageUsage / 100),
-                  SizedBox(
+                    name: "Storage",
+                    hardwareUsage: hardwareStatusProvider.storageUsage / 100,
+                    displayedText: Text(
+                      '${(hardwareStatusProvider.cpuUsage).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                          fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+                    ),
+                  ),
+                  const SizedBox(
                     height: 16,
                   ),
                   HardwareUsageBar(
-                      name: "Temperature",
-                      hardwareUsage: hardwareStatusProvider.temperature / 100),
+                    name: "Temperature",
+                    hardwareUsage: hardwareStatusProvider.temperature / 100,
+                    displayedText: Text(
+                      (hardwareStatusProvider.cpuUsage).toStringAsFixed(2),
+                      style: TextStyle(
+                          fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -1,7 +1,6 @@
 import 'package:device_homepage/constants.dart';
 import 'package:device_homepage/responsive.dart';
 import 'package:device_homepage/screens/dashboard/components/device_headline.dart';
-import 'package:device_homepage/screens/side_menu/components/side_menu.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

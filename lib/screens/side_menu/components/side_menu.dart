@@ -55,7 +55,7 @@ class DrawerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.all(8.0),
+      contentPadding: const EdgeInsets.all(16.0),
       onTap: press,
       horizontalTitleGap: 0.0,
       leading: icon,

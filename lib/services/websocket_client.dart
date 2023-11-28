@@ -5,14 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class WebSocketService {
-  static final WebSocketService _singleton = WebSocketService._internal();
+class HardwareStatusWSService {
+  static final HardwareStatusWSService _singleton =
+      HardwareStatusWSService._internal();
 
-  factory WebSocketService() {
+  factory HardwareStatusWSService() {
     return _singleton;
   }
 
-  WebSocketService._internal();
+  HardwareStatusWSService._internal();
 
   WebSocketChannel? _channel;
 
@@ -45,6 +46,50 @@ final hardwareStatusProvider = StreamProvider<HardwareStatus>((ref) {
   return webSocketService.hardwareStatusStream;
 });
 
-final webSocketServiceProvider = Provider<WebSocketService>((ref) {
-  return WebSocketService()..connect('your_server_address:8080');
+final webSocketServiceProvider = Provider<HardwareStatusWSService>((ref) {
+  return HardwareStatusWSService()..connect('');
+});
+
+class ContainerLogsWSService {
+  static final ContainerLogsWSService _singleton =
+      ContainerLogsWSService._internal();
+
+  factory ContainerLogsWSService() {
+    return _singleton;
+  }
+
+  ContainerLogsWSService._internal();
+
+  WebSocketChannel? _channel;
+
+  final _logsController = StreamController<String>();
+
+  Stream<String> get logsStream => _logsController.stream;
+
+  void connect(String serverAddress) {
+    _channel = WebSocketChannel.connect(Uri.parse(
+        'ws://localhost:8080/api/v1/watchtower/log-stream?container=watchtower'));
+    _channel!.stream.listen(
+      (data) {
+        // final jsonData = jsonDecode(data);
+        // final hardwareStatus = HardwareStatus.fromJson(jsonData);
+        _logsController.add(data);
+      },
+      onError: (error) {},
+      onDone: () {},
+    );
+  }
+
+  void close() {
+    _channel?.sink.close(status.normalClosure);
+  }
+}
+
+final logsProvider = StreamProvider<String>((ref) {
+  final webSocketService = ref.watch(logsServiceProvider);
+  return webSocketService.logsStream;
+});
+
+final logsServiceProvider = Provider<ContainerLogsWSService>((ref) {
+  return ContainerLogsWSService()..connect('');
 });

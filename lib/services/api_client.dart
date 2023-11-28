@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:device_homepage/models/device_info.dart';
 import 'package:device_homepage/models/hardware_status.dart';
+import 'package:device_homepage/screens/dashboard/components/logs_viewer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -18,7 +19,7 @@ class DeviceApiClient {
             "application/json" // Include your access token or any other headers
       };
       final response = await http.get(
-          Uri.parse("http://0.0.0.0:8080/api/v1/device/info"),
+          Uri.parse("http://localhost:8080/api/v1/device/info"),
           headers: headers);
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         return DeviceInfo.fromJson(
@@ -28,7 +29,6 @@ class DeviceApiClient {
       }
     } catch (e) {
       // Handle network and other errors
-      print(e);
       return const DeviceInfo(
         status: "1",
         uuid: "1",
@@ -49,7 +49,7 @@ class DeviceApiClient {
             'Bearer robotics', // Include your access token or any other headers
       };
       final response = await http.get(
-          Uri.parse("http://0.0.0.0:8080/api/v1/watchtower/hardware-status"),
+          Uri.parse("http://localhost:8080/api/v1/watchtower/hardware-status"),
           headers: headers);
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         return HardwareStatus.fromJson(
@@ -59,13 +59,33 @@ class DeviceApiClient {
       }
     } catch (e) {
       // Handle network and other errors
-      print('Error: $e');
       return const HardwareStatus(
         cpuUsage: 0.0,
         memoryUsage: 0.0,
         temperature: 0.0,
         storageUsage: 0.0,
       );
+    }
+  }
+
+  Future<String> getLogs() async {
+    try {
+      final Map<String, String> headers = {
+        'Authorization':
+            'Bearer robotics', // Include your access token or any other headers
+      };
+      final response = await http.get(
+          Uri.parse(
+              "http://localhost:8080/api/v1/watchtower/logs?container=watchtower"),
+          headers: headers);
+      if (response.statusCode == 200 && response.body.isNotEmpty) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to GET device-info.');
+      }
+    } catch (e) {
+      // Handle network and other errors
+      return "";
     }
   }
 }
@@ -76,26 +96,13 @@ final deviceDataProvider = FutureProvider<DeviceInfo>((ref) async {
   return ref.read(deviceClientProvider).getDeviceInfo();
 });
 
-// final hardwareStatusProvider = StreamProvider<HardwareStatus>((ref) async* {
-//   while (true) {
-//     final response = await http.get(Uri.parse('YOUR_BACKEND_API_ENDPOINT'));
-
-//     if (response.statusCode == 200) {
-//       yield HardwareStatus.fromJson(
-//           jsonDecode(response.body) as Map<String, dynamic>);
-//     } else {
-//       // Handle error
-//       print('Failed to load CPU usage data');
-//     }
-
-//     // Wait for 1 minute before fetching again
-//     await Future.delayed(const Duration(minutes: 1));
-//   }
-// });
+final containerLogsProvider = FutureProvider<String>((ref) async {
+  // logWindow.setToBottom(true);
+  return ref.read(deviceClientProvider).getLogs();
+});
 
 final webSocketProvider = Provider<WebSocketChannel>((ref) {
-  return WebSocketChannel.connect(
-      Uri.parse('ws://your_server_address:8080/ws'));
+  return WebSocketChannel.connect(Uri.parse(''));
 });
 
 final systemResourcesProvider = StreamProvider<HardwareStatus>((ref) {

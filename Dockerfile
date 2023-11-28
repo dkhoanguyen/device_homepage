@@ -29,16 +29,17 @@ WORKDIR $APP
 # Run build: 1 - clean, 2 - pub get, 3 - build web
 RUN flutter clean
 RUN flutter pub get
-RUN flutter build web
+RUN flutter build web --web-renderer canvaskit --release
 
 # once heare the app will be compiled and ready to deploy
 
-# use nginx to deploy
-FROM nginx:1.25.2-alpine
+# Stage 2 - Create the run-time image
+FROM nginx:stable-alpine AS runner
 
-# copy the info of the builded web app to nginx
+COPY default.conf /etc/nginx/conf.d
+# COPY package.json /usr/share/nginx/html
 COPY --from=build-env /app/build/web /usr/share/nginx/html
 
 # Expose and run nginx
-EXPOSE 9090
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

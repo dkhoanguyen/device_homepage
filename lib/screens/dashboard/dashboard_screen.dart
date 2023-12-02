@@ -18,7 +18,7 @@ class Dashboard extends ConsumerWidget {
         padding: const EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            const Header(),
+            const DeviceDashboardHeader(),
             const SizedBox(height: defaultPadding),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,38 +27,19 @@ class Dashboard extends ConsumerWidget {
                   flex: 5,
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 500,
-                        child: Container(
-                          padding: const EdgeInsets.all(defaultPadding),
-                          decoration: BoxDecoration(
-                              color: secondaryColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(color: Colors.white10)),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const DeviceHeadline(
-                                    nameTitle: "robotics_default",
-                                    actionButtonTitle: "Actions"),
-                                const Padding(
-                                  padding: EdgeInsets.all(defaultPadding / 2),
-                                  child: Divider(
-                                    color: Colors.white24,
-                                    thickness: 2,
-                                  ),
-                                ),
-                                Expanded(
-                                    child: LayoutBuilder(
-                                  builder: (context, constraints) =>
-                                      DeviceInfoCardGridView(
-                                    boxConstraints: constraints,
-                                  ),
-                                )),
-                              ]),
-                        ),
+                      const DeviceHighlights(),
+                      const SizedBox(
+                        height: defaultPadding,
                       ),
+                      SizedBox(
+                          height: 433,
+                          child: Container(
+                              padding: const EdgeInsets.all(defaultPadding),
+                              decoration: BoxDecoration(
+                                  color: secondaryColor,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  border: Border.all(color: Colors.white)))),
                       if (Responsive.isMobile(context))
                         const SizedBox(
                           height: defaultPadding,
@@ -69,7 +50,7 @@ class Dashboard extends ConsumerWidget {
                         const SizedBox(
                           height: defaultPadding,
                         ),
-                      if (Responsive.isMobile(context)) const LogsViewer(),
+                      if (Responsive.isMobile(context)) LogsViewer(),
                     ],
                   ),
                 ),
@@ -78,12 +59,12 @@ class Dashboard extends ConsumerWidget {
                     width: defaultPadding,
                   ),
                 if (!Responsive.isMobile(context))
-                  const Expanded(
+                  Expanded(
                       flex: 5,
                       child: Column(
                         children: [
-                          DeviceHardwareStatus(),
-                          SizedBox(
+                          const DeviceHardwareStatus(),
+                          const SizedBox(
                             height: defaultPadding,
                           ),
                           LogsViewer(),
@@ -93,6 +74,44 @@ class Dashboard extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DeviceHighlights extends StatelessWidget {
+  const DeviceHighlights({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 416,
+      child: Container(
+        padding: const EdgeInsets.all(defaultPadding),
+        decoration: BoxDecoration(
+            color: secondaryColor,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(color: Colors.white)),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const DeviceHeadline(
+              nameTitle: "robotics_default", actionButtonTitle: "Actions"),
+          const Padding(
+            padding: EdgeInsets.all(defaultPadding / 2),
+            child: Divider(
+              color: Colors.black87,
+              thickness: 2,
+            ),
+          ),
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) => DeviceInfoCardGridView(
+                boxConstraints: constraints,
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

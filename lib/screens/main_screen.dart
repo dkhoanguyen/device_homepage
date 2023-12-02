@@ -1,7 +1,7 @@
 import 'package:device_homepage/responsive.dart';
 import 'package:device_homepage/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:device_homepage/screens/side_menu/components/side_menu.dart';
+import 'package:device_homepage/screens/side_menu/side_menu.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -19,7 +19,12 @@ class MainScreen extends StatelessWidget {
               flex: 1,
               child: SideMenu(),
             ),
-          const Expanded(flex: 5, child: Dashboard()),
+          Expanded(
+              flex: MediaQuery.of(context).size.width < 1400 &&
+                      MediaQuery.of(context).size.width >= 1024
+                  ? 12
+                  : 7,
+              child: const Dashboard()),
         ],
       )),
     );

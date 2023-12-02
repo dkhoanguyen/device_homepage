@@ -5,8 +5,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Header extends StatelessWidget {
-  const Header({
+class DeviceDashboardHeader extends StatelessWidget {
+  const DeviceDashboardHeader({
     super.key,
   });
 

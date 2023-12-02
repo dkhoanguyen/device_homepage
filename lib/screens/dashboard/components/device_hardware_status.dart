@@ -16,7 +16,7 @@ class DeviceHardwareStatus extends ConsumerWidget {
         data: (hardwareStatusProvider) {
       return Container(
         padding: const EdgeInsets.all(defaultPadding),
-        height: 135,
+        height: 140,
         decoration: BoxDecoration(
             color: secondaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),

@@ -7,9 +7,15 @@ import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class DeviceApiClient {
-  static const baseUrl = 'http://0.0.0.0:8080';
+  static const baseUrl = 'http://localhost:8080';
+
+  String _containerName = "watchtower";
 
   DeviceApiClient();
+
+  void setContainerName(String name) {
+    _containerName = name;
+  }
 
   Future<DeviceInfo> getDeviceInfo() async {
     try {
@@ -76,7 +82,7 @@ class DeviceApiClient {
       };
       final response = await http.get(
           Uri.parse(
-              "http://localhost:8080/api/v1/watchtower/logs?container=watchtower"),
+              "http://localhost:8080/api/v1/watchtower/logs?container=$_containerName"),
           headers: headers);
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         return jsonDecode(response.body);
@@ -97,8 +103,17 @@ final deviceDataProvider = FutureProvider<DeviceInfo>((ref) async {
 });
 
 final containerLogsProvider = FutureProvider<String>((ref) async {
-  // logWindow.setToBottom(true);
+  // logContent.setToBottom(true);
   return ref.read(deviceClientProvider).getLogs();
+});
+
+final containerLogsStreamProvider =
+    StreamProvider.autoDispose<String>((ref) async* {
+  while (true) {
+    yield await ref.read(deviceClientProvider).getLogs();
+    await Future.delayed(const Duration(milliseconds: 1000));
+    logContent.setToBottom(true);
+  }
 });
 
 final webSocketProvider = Provider<WebSocketChannel>((ref) {

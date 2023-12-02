@@ -4,6 +4,7 @@ import 'package:device_homepage/models/hardware_status.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:device_homepage/screens/dashboard/components/logs_viewer.dart';
 
 class HardwareStatusWSService {
   static final HardwareStatusWSService _singleton =
@@ -71,9 +72,8 @@ class ContainerLogsWSService {
         'ws://localhost:8080/api/v1/watchtower/log-stream?container=watchtower'));
     _channel!.stream.listen(
       (data) {
-        // final jsonData = jsonDecode(data);
-        // final hardwareStatus = HardwareStatus.fromJson(jsonData);
         _logsController.add(data);
+        logContent.scrollToBottom();
       },
       onError: (error) {},
       onDone: () {},
@@ -85,11 +85,15 @@ class ContainerLogsWSService {
   }
 }
 
-final logsProvider = StreamProvider<String>((ref) {
+final logsProvider = StreamProvider.autoDispose<String>((ref) {
   final webSocketService = ref.watch(logsServiceProvider);
   return webSocketService.logsStream;
 });
 
-final logsServiceProvider = Provider<ContainerLogsWSService>((ref) {
-  return ContainerLogsWSService()..connect('');
+final logsServiceProvider = Provider.autoDispose<ContainerLogsWSService>((ref) {
+  final service = ContainerLogsWSService();
+  ref.onDispose(() {
+    service.close();
+  });
+  return service..connect('');
 });

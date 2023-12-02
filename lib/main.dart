@@ -1,5 +1,5 @@
 import 'package:device_homepage/constants.dart';
-import 'package:device_homepage/screens/side_menu/main_screen.dart';
+import 'package:device_homepage/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,10 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Device Management Dashboard',
-      theme: ThemeData.dark().copyWith(
+      theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: bgColor,
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-            .apply(bodyColor: Colors.white),
+            .apply(bodyColor: Colors.black),
         canvasColor: secondaryColor,
       ),
       home: const MainScreen(),

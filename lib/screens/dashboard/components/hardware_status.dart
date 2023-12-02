@@ -40,8 +40,9 @@ class HardwareUsageBar extends StatelessWidget {
         const SizedBox(height: 10.0),
         LinearProgressIndicator(
           color: const Color.fromRGBO(76, 175, 80, 1),
+          backgroundColor: const Color.fromARGB(255, 222, 222, 222),
           value: hardwareUsage, // Set the progress value
-          minHeight: 12.0,
+          minHeight: 16.0,
           borderRadius: BorderRadius.circular(3),
           valueColor: AlwaysStoppedAnimation<Color>(progressBarColor),
         ),

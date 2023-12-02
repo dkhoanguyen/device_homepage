@@ -1,6 +1,7 @@
 import 'package:device_homepage/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DeviceHeadline extends StatelessWidget {
   const DeviceHeadline(
@@ -14,12 +15,9 @@ class DeviceHeadline extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          nameTitle,
-          style: (!Responsive.isMobile(context))
-              ? Theme.of(context).textTheme.titleLarge
-              : Theme.of(context).textTheme.titleMedium,
-        ),
+        Text(nameTitle,
+            style: GoogleFonts.ubuntu(
+                fontSize: !Responsive.isMobile(context) ? 20 : 17)),
         const ActionSettings(),
       ],
     );
@@ -43,9 +41,10 @@ class _ActionSettingsState extends State<ActionSettings> {
         customButton: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-              color: Colors.blue,
+              color: const Color.fromARGB(255, 102, 185, 252),
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              border: Border.all(color: Colors.blue)),
+              border:
+                  Border.all(color: const Color.fromARGB(255, 102, 185, 252))),
           child: const Row(
             children: [
               Icon(
@@ -87,7 +86,7 @@ class _ActionSettingsState extends State<ActionSettings> {
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Colors.blue,
+            color: const Color.fromARGB(255, 102, 185, 252),
           ),
           offset: const Offset(0, -5),
         ),
@@ -100,31 +99,6 @@ class _ActionSettingsState extends State<ActionSettings> {
           padding: const EdgeInsets.only(left: 16, right: 16),
         ),
       ),
-    );
-  }
-
-  void _showAlertDialog(BuildContext context, String value) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Executing: $value'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Proceed'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

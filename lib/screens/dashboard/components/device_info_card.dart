@@ -5,6 +5,7 @@ import 'package:device_homepage/services/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class InfoCard extends StatelessWidget {
   const InfoCard({
@@ -30,7 +31,16 @@ class DeviceInfoCell {
   final String? title;
   final String? info;
   final bool? wrapText;
-  DeviceInfoCell({this.title, this.info, this.icon, this.image, this.wrapText});
+  final TextStyle? style;
+  final Widget? customWidgets;
+  DeviceInfoCell(
+      {this.title,
+      this.info,
+      this.icon,
+      this.image,
+      this.wrapText,
+      this.style,
+      this.customWidgets});
 }
 
 class DeviceInfoCardBuilder {
@@ -38,7 +48,7 @@ class DeviceInfoCardBuilder {
 
   DeviceInfoCardBuilder({required this.deviceInfo});
 
-  List<DeviceInfoCell> build() {
+  List<DeviceInfoCell> build(BuildContext context) {
     return [
       DeviceInfoCell(
           title: "Status",
@@ -83,7 +93,37 @@ class DeviceInfoCardBuilder {
             color: Colors.green,
             size: 20,
           )),
-      DeviceInfoCell(title: "Supervior Release", info: "Test"),
+      DeviceInfoCell(
+          title: "Supervior Release",
+          info: "ab31dfe80befac",
+          style: GoogleFonts.ubuntuMono(fontSize: adaptiveFontSize(context))),
+      DeviceInfoCell(title: "Fleet", info: "UTS"),
+      DeviceInfoCell(
+          title: "IP Address",
+          customWidgets: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: SizedBox(
+              height: 28,
+              child: SelectableText(
+                "192.168.0.100\n192.168.27.1",
+                style:
+                    GoogleFonts.ubuntuMono(fontSize: adaptiveFontSize(context)),
+              ),
+            ),
+          )),
+      DeviceInfoCell(
+          title: "MAC Address",
+          customWidgets: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: SizedBox(
+              height: 28,
+              child: SelectableText(
+                "00:1b:63:84:45:e6\nc3:ee:f9:eb:25:78",
+                style:
+                    GoogleFonts.ubuntuMono(fontSize: adaptiveFontSize(context)),
+              ),
+            ),
+          )),
     ];
   }
 }
@@ -96,21 +136,31 @@ class DeviceInfoCard extends StatelessWidget {
 
   final DeviceInfoCell info;
 
-  double _adaptiveFontSize(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    if (Responsive.isDesktop(context)) {
-      if (size.width > 1200) return 13;
-      return 12;
+  Widget hasCustomWidget(DeviceInfoCell info, BuildContext context) {
+    if (info.customWidgets != null) {
+      return info.customWidgets!;
     }
-    if (size.width >= 920) {
-      return 13;
-    } else if (size.width > 764 && size.width < 920) {
-      return 10;
-    }
-    if (size.width >= 500 && MediaQuery.of(context).size.width <= 764) {
-      return 13;
-    } else if (size.width < 500 && size.width >= 425) return 12;
-    return 11;
+    return (info.wrapText != null && info.wrapText == true)
+        ? Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(color: Colors.white10)),
+            child:
+                Text(info.info!, style: GoogleFonts.ubuntuMono(fontSize: 15)),
+          )
+        : SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: SizedBox(
+              height: defaultPadding,
+              child: SelectableText(
+                info.info!,
+                style: info.style ??
+                    GoogleFonts.notoSans(fontSize: adaptiveFontSize(context)),
+              ),
+            ),
+          );
   }
 
   @override
@@ -120,9 +170,7 @@ class DeviceInfoCard extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           info.title!,
-          style: TextStyle(
-              fontSize: _adaptiveFontSize(context),
-              fontWeight: FontWeight.bold),
+          style: GoogleFonts.openSans(fontSize: adaptiveFontSize(context)),
         ),
         const SizedBox(height: 5),
         Row(
@@ -132,27 +180,7 @@ class DeviceInfoCard extends StatelessWidget {
             if (info.image != null) info.image!,
             if (info.icon != null || info.image != null)
               const SizedBox(width: 5),
-            (info.wrapText != null && info.wrapText == true)
-                ? Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    decoration: BoxDecoration(
-                        color: Colors.pinkAccent,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(color: Colors.white10)),
-                    child: Text(
-                      info.info!,
-                      style: TextStyle(
-                          fontSize: _adaptiveFontSize(context),
-                          fontWeight: FontWeight.w100),
-                    ),
-                  )
-                : Text(
-                    info.info!,
-                    style: TextStyle(
-                        fontSize: _adaptiveFontSize(context),
-                        fontWeight: FontWeight.w100),
-                  ),
+            hasCustomWidget(info, context),
           ],
         ),
       ]),
@@ -183,7 +211,7 @@ class DeviceInfoCardGridView extends ConsumerWidget {
     final Size size = MediaQuery.of(context).size;
     return ref.watch(deviceDataProvider).when(data: (deviceDataProvider) {
       final deviceInfoList =
-          DeviceInfoCardBuilder(deviceInfo: deviceDataProvider).build();
+          DeviceInfoCardBuilder(deviceInfo: deviceDataProvider).build(context);
       return GridView.builder(
         shrinkWrap: true,
         itemCount: deviceInfoList.length,
@@ -201,4 +229,21 @@ class DeviceInfoCardGridView extends ConsumerWidget {
       return const Text("Loading device information...");
     });
   }
+}
+
+double adaptiveFontSize(BuildContext context) {
+  final Size size = MediaQuery.of(context).size;
+  if (Responsive.isDesktop(context)) {
+    if (size.width > 1200) return 13;
+    return 12;
+  }
+  if (size.width >= 920) {
+    return 13;
+  } else if (size.width > 764 && size.width < 920) {
+    return 11;
+  }
+  if (size.width >= 500 && MediaQuery.of(context).size.width <= 764) {
+    return 13;
+  } else if (size.width < 500 && size.width >= 425) return 12;
+  return 11;
 }

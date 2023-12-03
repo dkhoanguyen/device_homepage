@@ -1,7 +1,6 @@
 import 'package:device_homepage/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class DeviceHeadline extends StatelessWidget {
   const DeviceHeadline(
@@ -16,7 +15,8 @@ class DeviceHeadline extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(nameTitle,
-            style: GoogleFonts.ubuntu(
+            style: TextStyle(
+                fontFamily: 'Ubuntu',
                 fontSize: !Responsive.isMobile(context) ? 20 : 17)),
         const ActionSettings(),
       ],

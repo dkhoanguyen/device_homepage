@@ -96,7 +96,8 @@ class DeviceInfoCardBuilder {
       DeviceInfoCell(
           title: "Supervior Release",
           info: "ab31dfe80befac",
-          style: GoogleFonts.ubuntuMono(fontSize: adaptiveFontSize(context))),
+          style: TextStyle(
+              fontFamily: 'Ubuntu Mono', fontSize: adaptiveFontSize(context))),
       DeviceInfoCell(title: "Fleet", info: "UTS"),
       DeviceInfoCell(
           title: "IP Address",
@@ -106,8 +107,9 @@ class DeviceInfoCardBuilder {
               height: 28,
               child: SelectableText(
                 "192.168.0.100\n192.168.27.1",
-                style:
-                    GoogleFonts.ubuntuMono(fontSize: adaptiveFontSize(context)),
+                style: TextStyle(
+                    fontFamily: 'Ubuntu Mono',
+                    fontSize: adaptiveFontSize(context)),
               ),
             ),
           )),
@@ -119,8 +121,9 @@ class DeviceInfoCardBuilder {
               height: 28,
               child: SelectableText(
                 "00:1b:63:84:45:e6\nc3:ee:f9:eb:25:78",
-                style:
-                    GoogleFonts.ubuntuMono(fontSize: adaptiveFontSize(context)),
+                style: TextStyle(
+                    fontFamily: 'Ubuntu Mono',
+                    fontSize: adaptiveFontSize(context)),
               ),
             ),
           )),
@@ -147,8 +150,9 @@ class DeviceInfoCard extends StatelessWidget {
                 color: Colors.green,
                 borderRadius: const BorderRadius.all(Radius.circular(5)),
                 border: Border.all(color: Colors.white10)),
-            child:
-                Text(info.info!, style: GoogleFonts.ubuntuMono(fontSize: 15)),
+            child: Text(info.info!,
+                style:
+                    const TextStyle(fontFamily: 'Ubuntu Mono', fontSize: 15)),
           )
         : SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -165,7 +169,6 @@ class DeviceInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return SizedBox(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
@@ -244,6 +247,7 @@ double adaptiveFontSize(BuildContext context) {
   }
   if (size.width >= 500 && MediaQuery.of(context).size.width <= 764) {
     return 13;
+    // ignore: curly_braces_in_flow_control_structures
   } else if (size.width < 500 && size.width >= 425) return 12;
   return 11;
 }

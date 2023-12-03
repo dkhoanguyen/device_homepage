@@ -1,9 +1,7 @@
 import 'package:device_homepage/constants.dart';
-import 'package:device_homepage/services/api_client.dart';
 import 'package:device_homepage/services/websocket_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tint/tint.dart';
 
 class AdaptiveSwitch extends StatefulWidget {
@@ -48,7 +46,7 @@ class LogsViewer extends ConsumerWidget {
       decoration: BoxDecoration(
           color: secondaryColor,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(color: Colors.white10)),
+          border: Border.all(color: const Color.fromARGB(26, 0, 0, 0))),
       child: Column(
         children: [
           Row(
@@ -233,14 +231,21 @@ class _LogDetails extends StatelessWidget {
         text: TextSpan(children: [
       TextSpan(
           text: "$timestamp ",
-          style: GoogleFonts.ubuntuMono(fontSize: 13, color: Colors.white)),
+          style: const TextStyle(
+              fontFamily: 'Ubuntu Mono', fontSize: 13, color: Colors.white)),
       TextSpan(
           text: logType! + remainder!,
-          style: GoogleFonts.ubuntuMono(
-              fontSize: 13, color: logTypeColor(logType!))),
+          style: TextStyle(
+              fontFamily: 'Ubuntu Mono',
+              fontSize: 13,
+              color: logTypeColor(logType!))),
       TextSpan(
           text: content,
-          style: GoogleFonts.ubuntuMono(fontSize: 13, color: Colors.white)),
+          style: const TextStyle(
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Ubuntu Mono',
+              fontSize: 13,
+              color: Colors.white)),
     ]));
   }
 }

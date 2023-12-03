@@ -1,6 +1,5 @@
 import 'package:device_homepage/constants.dart';
-import 'package:device_homepage/responsive.dart';
-import 'package:device_homepage/screens/dashboard/controller_dashboard/controller_dashboard_screen.dart';
+import 'package:device_homepage/screens/dashboard/service/controller_dashboard_screen.dart';
 import 'package:device_homepage/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,15 +12,13 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       width: 200,
-      backgroundColor: const Color.fromARGB(255, 45, 93, 165),
+      backgroundColor: const Color.fromARGB(255, 63, 63, 63),
       child: ListView(
         children: [
           MediaQuery.of(context).size.width < 1400 &&
                   MediaQuery.of(context).size.width >= 1024
-              ? const SizedBox(height: 100)
-              : const DrawerHeader(
-                  child: Center(child: Text("Heading")),
-                ),
+              ? const SizedBox(height: 50)
+              : DrawerHeader(child: Container()),
           DrawerListTile(
             title: "Dashboard",
             icon: const Icon(

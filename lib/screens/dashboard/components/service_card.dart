@@ -27,33 +27,44 @@ class ServiceCardWidget extends StatelessWidget {
                         style: TextStyle(color: Colors.black, fontSize: 14.0),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.refresh,
-                              size: 17.0,
-                            ),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.play_arrow,
+                            size: 17.0,
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.download,
-                              size: 17.0,
-                            ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.pause,
+                            size: 17.0,
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.clear,
-                              size: 17.0,
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.stop,
+                            size: 17.0,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.restart_alt,
+                            size: 17.0,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.document_scanner,
+                            size: 17.0,
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),

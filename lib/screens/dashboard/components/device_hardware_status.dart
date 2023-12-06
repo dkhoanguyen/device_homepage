@@ -34,6 +34,10 @@ class DeviceHardwareStatus extends ConsumerWidget {
                       style: TextStyle(
                           fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
                     ),
+                    widget: Image.asset(
+                      "assets/images/cpu.png",
+                      height: 18,
+                    ),
                   ),
                   const SizedBox(
                     height: 16,
@@ -45,6 +49,10 @@ class DeviceHardwareStatus extends ConsumerWidget {
                       '${(hardwareStatusProvider.cpuUsage).toStringAsFixed(2)}%',
                       style: TextStyle(
                           fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+                    ),
+                    widget: Image.asset(
+                      "assets/images/ram-memory.png",
+                      height: 18,
                     ),
                   ),
                 ],
@@ -64,6 +72,10 @@ class DeviceHardwareStatus extends ConsumerWidget {
                       style: TextStyle(
                           fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
                     ),
+                    widget: Image.asset(
+                      "assets/images/database-storage.png",
+                      height: 18,
+                    ),
                   ),
                   const SizedBox(
                     height: 16,
@@ -75,6 +87,10 @@ class DeviceHardwareStatus extends ConsumerWidget {
                       (hardwareStatusProvider.cpuUsage).toStringAsFixed(2),
                       style: TextStyle(
                           fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+                    ),
+                    widget: Image.asset(
+                      "assets/images/thermometer.png",
+                      height: 18,
                     ),
                   ),
                 ],

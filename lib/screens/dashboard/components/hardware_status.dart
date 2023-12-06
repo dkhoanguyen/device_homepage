@@ -5,11 +5,14 @@ class HardwareUsageBar extends StatelessWidget {
   final double hardwareUsage;
   final String name;
   final Text displayedText;
-  const HardwareUsageBar(
+  Widget? widget;
+
+  HardwareUsageBar(
       {super.key,
       required this.hardwareUsage,
       required this.name,
-      required this.displayedText});
+      required this.displayedText,
+      this.widget});
 
   Color _progressBarColor(double value) {
     if (value >= 0.7) {
@@ -29,10 +32,17 @@ class HardwareUsageBar extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              name,
-              style: TextStyle(
-                  fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                      fontSize: Responsive.isMobile(context) ? 10.0 : 12.0),
+                ),
+                const SizedBox(width: 5),
+                // (widget != null) ? widget! : Container(),
+              ],
             ),
             displayedText,
           ],
